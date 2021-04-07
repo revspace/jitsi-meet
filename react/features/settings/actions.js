@@ -11,7 +11,7 @@ import {
     SET_VIDEO_SETTINGS_VISIBILITY
 } from './actionTypes';
 import { SettingsDialog } from './components';
-import { getMoreTabProps, getProfileTabProps } from './functions';
+import { getMoreTabProps, getCustomTabProps, getProfileTabProps } from './functions';
 
 declare var APP: Object;
 
@@ -88,6 +88,12 @@ export function submitMoreTab(newState: Object): Function {
         if (newState.currentLanguage !== currentState.currentLanguage) {
             i18next.changeLanguage(newState.currentLanguage);
         }
+    };
+}
+
+export function submitCustomTab(newState: Object): Function {
+    return (dispatch, getState) => {
+        dispatch(updateSettings(newState));
     };
 }
 

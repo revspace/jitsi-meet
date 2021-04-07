@@ -11,11 +11,12 @@ import {
     getDeviceSelectionDialogProps,
     submitDeviceSelectionTab
 } from '../../../device-selection';
-import { submitMoreTab, submitProfileTab } from '../../actions';
+import { submitMoreTab, submitCustomTab, submitProfileTab } from '../../actions';
 import { SETTINGS_TABS } from '../../constants';
-import { getMoreTabProps, getProfileTabProps } from '../../functions';
+import { getMoreTabProps, getCustomTabProps, getProfileTabProps } from '../../functions';
 
 import CalendarTab from './CalendarTab';
+import CustomTab from './CustomTab';
 import MoreTab from './MoreTab';
 import ProfileTab from './ProfileTab';
 
@@ -130,6 +131,7 @@ function _mapStateToProps(state) {
     // The settings sections to display.
     const showDeviceSettings = configuredTabs.includes('devices');
     const moreTabProps = getMoreTabProps(state);
+    const customTabProps = getCustomTabProps(state);
     const { showModeratorSettings, showLanguageSettings, showPrejoinSettings } = moreTabProps;
     const showProfileSettings
         = configuredTabs.includes('profile') && !state['features/base/config'].disableProfile;
@@ -205,6 +207,23 @@ function _mapStateToProps(state) {
             submit: submitMoreTab
         });
     }
+
+    tabs.push({
+        name: SETTINGS_TABS.CUSTOM,
+        component: CustomTab,
+        label: 'Custom',
+        props: customTabProps,
+        propsUpdateFunction: (tabState, newProps) => {
+            // Updates tab props, keeping users selection
+
+            return {
+                ...newProps,
+                showLocalVideoFirst: tabState.showLocalVideoFirst
+            };
+        },
+        styles: 'settings-pane more-pane',
+        submit: submitCustomTab
+    });
 
     return { _tabs: tabs };
 }

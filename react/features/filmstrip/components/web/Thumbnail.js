@@ -446,6 +446,13 @@ class Thumbnail extends Component<Props, State> {
      * @returns {void}
      */
     _updateAudioLevel(audioLevel) {
+        const { participantID, sendOrderUpdate, videoOrder, _isVideoPlayable} = this.props;
+
+        // send volume update for re-ordering
+        if (_isVideoPlayable && (videoOrder === -1 || videoOrder >= 3) && audioLevel > 0.05) {
+            sendOrderUpdate(participantID);
+        }
+
         this.setState({
             audioLevel
         });
@@ -796,9 +803,11 @@ class Thumbnail extends Component<Props, State> {
         const {
             _audioTrack,
             _isTestModeEnabled,
+            _isVideoPlayable,
             _participant,
             _startSilent,
-            _videoTrack
+            _videoTrack,
+            videoOrder
         } = this.props;
         const { id } = _participant;
         const { audioLevel, canPlayEventReceived, volume } = this.state;
@@ -812,6 +821,14 @@ class Thumbnail extends Component<Props, State> {
         const jitsiVideoTrack = _videoTrack?.jitsiTrack;
         const videoTrackId = jitsiVideoTrack && jitsiVideoTrack.getId();
         const videoEventListeners = {};
+
+        if (videoOrder !== undefined) {
+            styles.thumbnail.order = videoOrder;
+        }
+
+        if (!_isVideoPlayable) {
+            styles.thumbnail.order = 999;
+        }
 
         if (_videoTrack && _isTestModeEnabled) {
             VIDEO_TEST_EVENTS.forEach(attribute => {

@@ -114,7 +114,62 @@ class Filmstrip extends Component <Props> {
         // Bind event handlers so they are only bound once for every instance.
         this._onShortcutToggleFilmstrip = this._onShortcutToggleFilmstrip.bind(this);
         this._onToolbarToggleFilmstrip = this._onToolbarToggleFilmstrip.bind(this);
+        this.videoOrderUpdate = this.videoOrderUpdate.bind(this);
+        this.getVideoOrder = this.getVideoOrder.bind(this);
+
+        this.state = {
+            videoOrder: [],
+            videoOrderDebounce: {}
+        };
     }
+
+    /**
+     * Update video order from Thumbnail.
+     *
+     * @param {string} participant - Participant's ID.
+     * @returns {null}
+     */
+    videoOrderUpdate(participant) {
+        const { videoOrder, videoOrderDebounce } = this.state;
+
+        console.log(videoOrder, videoOrderDebounce);
+
+        if (videoOrder[0] === participant) { // no need to update, happens often
+            return;
+        }
+
+        if (videoOrderDebounce[participant] === undefined) {
+            videoOrderDebounce[participant] = 1;
+        } else {
+            videoOrderDebounce[participant] += 1;
+
+            if (videoOrderDebounce[participant] > 10) {
+                delete videoOrderDebounce[participant];
+                const currIndex = videoOrder.indexOf(participant);
+
+                if (currIndex !== -1) {
+                    videoOrder.splice(currIndex, 1);
+                }
+
+                videoOrder.unshift(participant);
+            }
+        }
+
+        this.setState({
+            videoOrder,
+            videoOrderDebounce
+        });
+    }
+
+    getVideoOrder(id) {
+        const { videoOrder } = this.state;
+        let currIndex = videoOrder.indexOf(id);
+        if (currIndex === -1) {
+            return 1;
+        }
+        return -1 * (videoOrder.length - currIndex);
+    }
+
 
     /**
      * Implements React's {@link Component#componentDidMount}.
@@ -149,7 +204,7 @@ class Filmstrip extends Component <Props> {
         const filmstripStyle = { };
         const filmstripRemoteVideosContainerStyle = {};
         let remoteVideoContainerClassName = 'remote-videos-container';
-        const { _currentLayout, _participants } = this.props;
+        const { _currentLayout, _participants, _showLocalVideoFirst } = this.props;
         const remoteParticipants = _participants.filter(p => !p.local);
         const localParticipant = getLocalParticipant(_participants);
         const tileViewActive = _currentLayout === LAYOUTS.TILE_VIEW;
@@ -183,6 +238,14 @@ class Filmstrip extends Component <Props> {
 
         if (!this.props._hideToolbar && this.props._isFilmstripButtonEnabled) {
             toolbar = this._renderToggleButton();
+        }
+
+        let localVideoTileStyle = {
+            order: 999
+        };
+
+        if (_showLocalVideoFirst) {
+            localVideoTileStyle.order = -999;
         }
 
         return (
@@ -221,10 +284,14 @@ class Filmstrip extends Component <Props> {
                                     p => (
                                         <Thumbnail
                                             key = { `remote_${p.id}` }
-                                            participantID = { p.id } />
+                                            participantID = { p.id }
+                                            sendOrderUpdate = { this.videoOrderUpdate }
+                                            videoOrder = { this.getVideoOrder(p.id) } />
                                     ))
                             }
-                            <div id = 'localVideoTileViewContainer'>
+                            <div
+                                id = 'localVideoTileViewContainer'
+                                style = {localVideoTileStyle} >
                                 {
                                     tileViewActive && <Thumbnail
                                         key = 'local'
@@ -342,7 +409,8 @@ function _mapStateToProps(state) {
         _participants: state['features/base/participants'],
         _rows: gridDimensions.rows,
         _videosClassName: videosClassName,
-        _visible: visible
+        _visible: visible,
+        _showLocalVideoFirst: state['features/base/settings'].showLocalVideoFirst
     };
 }
 

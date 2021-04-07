@@ -126,6 +126,25 @@ export function getMoreTabProps(stateful: Object | Function) {
 }
 
 /**
+ * Returns the properties for the "Custom" tab from settings dialog from Redux
+ * state.
+ *
+ * @param {(Function|Object)} stateful -The (whole) redux state, or redux's
+ * {@code getState} function to be used to retrieve the state.
+ * @returns {Object} - The properties for the "More" tab from settings dialog.
+ */
+export function getCustomTabProps(stateful: Object | Function) {
+    const state = toState(stateful);
+    const {
+        showLocalVideoFirst
+    } = state['features/base/settings'];
+
+    return {
+        showLocalVideoFirst
+    };
+}
+
+/**
  * Returns the properties for the "Profile" tab from settings dialog from Redux
  * state.
  *
