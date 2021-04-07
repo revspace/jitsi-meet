@@ -130,9 +130,15 @@ class Filmstrip extends Component <Props> {
      * @returns {null}
      */
     videoOrderUpdate(participant) {
+        const { _reorderActiveSpeakers } = this.props;
         const { videoOrder, videoOrderDebounce } = this.state;
 
         console.log(videoOrder, videoOrderDebounce);
+
+        // reordering is currently disabled, don't process new updates
+        if (!_reorderActiveSpeakers) {
+            return;
+        }
 
         if (videoOrder[0] === participant) { // no need to update, happens often
             return;
@@ -141,18 +147,22 @@ class Filmstrip extends Component <Props> {
         if (videoOrderDebounce[participant] === undefined) {
             videoOrderDebounce[participant] = 1;
         } else {
-            videoOrderDebounce[participant] += 1;
+            const currIndex = videoOrder.indexOf(participant);
 
-            if (videoOrderDebounce[participant] > 10) {
-                delete videoOrderDebounce[participant];
-                const currIndex = videoOrder.indexOf(participant);
+            if (currIndex === -1 || currIndex >= 3) {
+                videoOrderDebounce[participant] += 1;
 
-                if (currIndex !== -1) {
-                    videoOrder.splice(currIndex, 1);
+                if (videoOrderDebounce[participant] > 10) {
+                    delete videoOrderDebounce[participant];
+
+                    if (currIndex !== -1) {
+                        videoOrder.splice(currIndex, 1);
+                    }
+
+                    videoOrder.unshift(participant);
                 }
-
-                videoOrder.unshift(participant);
             }
+
         }
 
         this.setState({
@@ -165,7 +175,7 @@ class Filmstrip extends Component <Props> {
         const { videoOrder } = this.state;
         let currIndex = videoOrder.indexOf(id);
         if (currIndex === -1) {
-            return 1;
+            return undefined;
         }
         return -1 * (videoOrder.length - currIndex);
     }
@@ -410,6 +420,7 @@ function _mapStateToProps(state) {
         _rows: gridDimensions.rows,
         _videosClassName: videosClassName,
         _visible: visible,
+        _reorderActiveSpeakers: state['features/base/settings'].reorderActiveSpeakers,
         _showLocalVideoFirst: state['features/base/settings'].showLocalVideoFirst
     };
 }

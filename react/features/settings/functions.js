@@ -136,10 +136,12 @@ export function getMoreTabProps(stateful: Object | Function) {
 export function getCustomTabProps(stateful: Object | Function) {
     const state = toState(stateful);
     const {
-        showLocalVideoFirst
+        showLocalVideoFirst,
+        reorderActiveSpeakers
     } = state['features/base/settings'];
 
     return {
+        reorderActiveSpeakers,
         showLocalVideoFirst
     };
 }

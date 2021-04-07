@@ -218,6 +218,7 @@ function _mapStateToProps(state) {
 
             return {
                 ...newProps,
+                reorderActiveSpeakers: tabState.reorderActiveSpeakers,
                 showLocalVideoFirst: tabState.showLocalVideoFirst
             };
         },

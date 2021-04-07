@@ -18,7 +18,7 @@ class CustomTab extends AbstractDialogTab {
      * @returns {ReactElement}
      */
     render() {
-        const { showLocalVideoFirst } = this.props;
+        const { showLocalVideoFirst, reorderActiveSpeakers } = this.props;
 
         return (<div className = 'more-tab custom-tab'>
             <div className = 'settings-sub-pane'>
@@ -30,6 +30,15 @@ class CustomTab extends AbstractDialogTab {
                     onChange = {
                         ({ target: { checked } }) =>
                             super._onChange({ showLocalVideoFirst: checked })
+                    } />
+                <Checkbox
+                    isChecked = { reorderActiveSpeakers }
+                    label = 'Reorder Active Speakers'
+                    name = 'reorder-active-speakers'
+                    // eslint-disable-next-line react/jsx-no-bind
+                    onChange = {
+                        ({ target: { checked } }) =>
+                            super._onChange({ reorderActiveSpeakers: checked })
                     } />
             </div>
         </div>);

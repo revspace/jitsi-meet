@@ -446,10 +446,10 @@ class Thumbnail extends Component<Props, State> {
      * @returns {void}
      */
     _updateAudioLevel(audioLevel) {
-        const { participantID, sendOrderUpdate, videoOrder, _isVideoPlayable} = this.props;
+        const { participantID, sendOrderUpdate, _isVideoPlayable} = this.props;
 
         // send volume update for re-ordering
-        if (_isVideoPlayable && (videoOrder === -1 || videoOrder >= 3) && audioLevel > 0.05) {
+        if (_isVideoPlayable && audioLevel > 0.05) {
             sendOrderUpdate(participantID);
         }
 
@@ -824,6 +824,8 @@ class Thumbnail extends Component<Props, State> {
 
         if (videoOrder !== undefined) {
             styles.thumbnail.order = videoOrder;
+        } else {
+            styles.thumbnail.order = 1;
         }
 
         if (!_isVideoPlayable) {

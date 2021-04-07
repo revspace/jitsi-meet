@@ -36,6 +36,7 @@ const DEFAULT_STATE = {
     userSelectedCameraDeviceLabel: undefined,
     userSelectedMicDeviceLabel: undefined,
     userSelectedSkipPrejoin: undefined,
+    reorderActiveSpeakers: true,
     showLocalVideoFirst: false
 };
 
