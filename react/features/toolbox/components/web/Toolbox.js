@@ -75,7 +75,7 @@ import {
     setToolbarHovered,
     setToolboxVisible
 } from '../../actions';
-import { getToolbarAdditionalButtons, isToolboxVisible } from '../../functions';
+import { isToolboxVisible } from '../../functions';
 import DownloadButton from '../DownloadButton';
 import HangupButton from '../HangupButton';
 import HelpButton from '../HelpButton';
@@ -1216,7 +1216,7 @@ class Toolbox extends Component<Props> {
             t
         } = this.props;
 
-        const buttonSet = getToolbarAdditionalButtons(_clientWidth, _isMobile);
+        const buttonSet = new Set([ 'chat', 'tileview', 'overflow' ]);
         const toolbarAccLabel = 'toolbar.accessibilityLabel.moreActionsMenu';
         const showOverflowMenuButton = buttonSet.has('overflow');
         const containerClassName = `toolbox-content${_isMobile ? ' toolbox-content-mobile' : ''}`;
