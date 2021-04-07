@@ -210,6 +210,10 @@ export default class AudioTrack extends Component<Props> {
         this._ref = audioElement;
         const { onInitialVolumeSet } = this.props;
 
+        if (this._ref !== null) {
+            this._ref.volume = 0.5;
+        }
+
         if (this._ref && onInitialVolumeSet) {
             onInitialVolumeSet(this._ref.volume);
         }
