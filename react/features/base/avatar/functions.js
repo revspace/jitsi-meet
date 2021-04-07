@@ -41,7 +41,7 @@ export function getAvatarColor(initials: ?string) {
  * @returns {string?}
  */
 export function getInitials(s: ?string) {
-    if (s.length <= 3) {
+    if (s !== undefined && s.length <= 3) {
         return s;
     }
 
