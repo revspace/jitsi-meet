@@ -743,9 +743,7 @@ class Thumbnail extends Component<Props, State> {
                 <span className = 'localvideomenu'>
                     <LocalVideoMenuTriggerButton />
                 </span>
-                <span className = 'audioindicator-container'>
-                    <AudioLevelIndicator audioLevel = { audioLevel } />
-                </span>
+                <AudioLevelIndicator audioLevel = { audioLevel } />
             </span>
         );
     }
@@ -876,9 +874,7 @@ class Thumbnail extends Component<Props, State> {
                         onVolumeChange = { onVolumeChange }
                         participantID = { id } />
                 </span>
-                <span className = 'audioindicator-container'>
-                    <AudioLevelIndicator audioLevel = { audioLevel } />
-                </span>
+                <AudioLevelIndicator audioLevel = { audioLevel } />
             </span>
         );
     }

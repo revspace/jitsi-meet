@@ -7,7 +7,7 @@ import React, { Component } from 'react';
  *
  * IMPORTANT: AudioLevelIndicator assumes that this is an odd number.
  */
-const AUDIO_LEVEL_DOTS = 5;
+const AUDIO_LEVEL_DOTS = 7;
 
 /**
  * The index of the dot that is at the direct middle of all other dots.
@@ -46,7 +46,7 @@ class AudioLevelIndicator extends Component<Props> {
             ? Math.min(passedAudioLevel * 1.2, 1) : 0;
 
         // Let's now stretch the audio level over the number of dots we have.
-        const stretchedAudioLevel = AUDIO_LEVEL_DOTS * audioLevel;
+        const stretchedAudioLevel = AUDIO_LEVEL_DOTS * audioLevel * 2; // * 2 for extra sensitivity
 
         const audioLevelDots = [];
 
@@ -74,10 +74,17 @@ class AudioLevelIndicator extends Component<Props> {
             );
         }
 
+        const audioBoxActive = (audioLevel > 0.05) ? 'active' : '';
+
         return (
-            <span className = 'audioindicator in-react'>
-                { audioLevelDots }
-            </span>
+            <>
+                <div className = 'audioindicator-container' >
+                    <span className = { `audioindicator-box ${audioBoxActive}` } />
+                    <span className = 'audioindicator-dots'>
+                        { audioLevelDots }
+                    </span>
+                </div>
+            </>
         );
     }
 }
