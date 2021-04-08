@@ -273,7 +273,9 @@ class Filmstrip extends Component <Props> {
                             {
                                 !tileViewActive && <Thumbnail
                                     key = 'local'
-                                    participantID = { localParticipant.id } />
+                                    participantID = { localParticipant.id }
+                                    sendOrderUpdate = { this.videoOrderUpdate }
+                                    videoOrder = { this.getVideoOrder(localParticipant.id) } />
                             }
                         </div>
                     </div>
@@ -305,7 +307,9 @@ class Filmstrip extends Component <Props> {
                                 {
                                     tileViewActive && <Thumbnail
                                         key = 'local'
-                                        participantID = { localParticipant.id } />
+                                        participantID = { localParticipant.id }
+                                        sendOrderUpdate = { this.videoOrderUpdate }
+                                        videoOrder = { this.getVideoOrder(localParticipant.id) } />
                                 }
                             </div>
                         </div>
