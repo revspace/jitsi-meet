@@ -22,6 +22,6 @@ export function preloadImage(src: string | Object): Promise<string> {
 
         // $FlowExpectedError
         image.referrerPolicy = 'no-referrer';
-        image.src = `/imageproxy/${url}`;
+        image.src = `/imageproxy/${src}`;
     });
 }
