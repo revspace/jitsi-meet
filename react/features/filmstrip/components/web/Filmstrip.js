@@ -133,8 +133,6 @@ class Filmstrip extends Component <Props> {
         const { _reorderActiveSpeakers } = this.props;
         const { videoOrder, videoOrderDebounce } = this.state;
 
-        console.log(videoOrder, videoOrderDebounce);
-
         // reordering is currently disabled, don't process new updates
         if (!_reorderActiveSpeakers) {
             return;
