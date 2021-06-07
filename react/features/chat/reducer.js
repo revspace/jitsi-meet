@@ -11,7 +11,7 @@ import {
 } from './actionTypes';
 
 const DEFAULT_STATE = {
-    isOpen: false,
+    isOpen: true,
     lastReadMessage: undefined,
     messages: [],
     privateMessageRecipient: undefined

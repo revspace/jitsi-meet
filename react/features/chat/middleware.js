@@ -159,10 +159,10 @@ StateListenerRegistry.register(
         if (conference !== previousConference) {
             // conference changed, left or failed...
 
-            if (getState()['features/chat'].isOpen) {
-                // Closes the chat if it's left open.
-                dispatch(closeChat());
-            }
+            // if (getState()['features/chat'].isOpen) {
+            //     // Closes the chat if it's left open.
+            //     dispatch(closeChat());
+            // }
 
             // Clear chat messages.
             dispatch(clearMessages());
